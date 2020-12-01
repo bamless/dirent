@@ -1,9 +1,8 @@
-cmake_minimum_required (VERSION 2.8.11)
+cmake_minimum_required (VERSION 2.8.12)
 project (dirent LANGUAGES C CXX)
 
 # User options
-option(DIRENT_BUILD_TESTS "Build bundled tests" ON)
-message(STATUS "Build test and example programs: ${DIRENT_BUILD_TESTS}")
+option(DIRENT_BUILD_TESTS "Build bundled tests" OFF)
 
 # Initialize C and C++ compilers
 enable_language (C CXX)
@@ -17,21 +16,8 @@ if (NOT CMAKE_BUILD_TYPE)
     )
 endif (NOT CMAKE_BUILD_TYPE)
 
-# Use the include directory only on Windows
-if (WIN32)
-    include_directories (${CMAKE_SOURCE_DIR}/include)
-endif (WIN32)
-
-# Install dirent.h
-if (WIN32)
-    install (FILES include/dirent.h DESTINATION include)
-endif (WIN32)
-
-# Add distclean target
-add_custom_target (distclean
-    COMMAND ${CMAKE_BUILD_TOOL} clean
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/distclean.cmake
-)
+add_library(dirent INTERFACE)
+target_include_directories(dirent INTERFACE include)
 
 # Build example programs
 if(DIRENT_BUILD_TESTS)
