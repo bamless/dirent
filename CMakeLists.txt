@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 project(dirent LANGUAGES C CXX)
 
 # User options
-option(DIRENT_BUILD_TESTS "Build bundled tests" ON)
-message(STATUS "Build test and example programs: ${DIRENT_BUILD_TESTS}")
+option(DIRENT_BUILD_TESTS "Build bundled tests" OFF)
 
 # Initialize C and C++ compilers
 enable_language(C CXX)
@@ -32,6 +31,9 @@ add_custom_target(distclean
     COMMAND ${CMAKE_BUILD_TOOL} clean
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/distclean.cmake
 )
+
+add_library(dirent INTERFACE)
+target_include_directories(dirent INTERFACE include)
 
 # Build example programs
 if(DIRENT_BUILD_TESTS)
